@@ -1,0 +1,5 @@
+plik1.txt
+plik2.txt
+#WORDS
+ala 5 2 plik1.txt 3 plik2.txt 2
+kot 1 1 plik2.txt 1
