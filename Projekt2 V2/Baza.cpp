@@ -132,7 +132,7 @@ int Baza::loadFromFile()
 	return 1;
 }
 
-Plik * Baza::getFile(std::string nazwa_)
+Plik * Baza::getFile(string nazwa_)
 {
 	for (unsigned i = 0; i < pliki.size(); ++i) {
 		if (pliki[i].getNazwa() == nazwa_)
@@ -141,11 +141,45 @@ Plik * Baza::getFile(std::string nazwa_)
 	return nullptr;
 }
 
-Word * Baza::szukajSlowa(std::string nazwa_)
+void Baza::wyczyscBaze()
+{
+	pliki.clear();
+	slowa.clear();
+}
+
+Word * Baza::szukajSlowa(string nazwa_)
 {
 	for (unsigned i = 0; i < slowa.size(); ++i) {
 		if (slowa[i].tresc == nazwa_)
 			return &slowa[i];
 	}
 	return nullptr;
+}
+
+void Baza::wypiszBaze() const
+{
+	for (unsigned i = 0; i < pliki.size(); ++i) {
+		cout << pliki[i].getNazwa() << endl;
+	}
+	cout << "WORDS:" << endl;
+	for (unsigned i = 0; i < slowa.size(); ++i) {
+		Word const &word = slowa[i];
+		cout << word.tresc << " " << word.ilosc << " " << word.listaPlikow.size() << " ";
+		for (unsigned k = 0; k < word.listaPlikow.size(); ++k) {
+			Wystapienie wyst = word.listaPlikow[i];
+			cout << wyst.getNazwaPliku() << " " << wyst.getIlosc() << " ";
+		}
+		cout << endl;
+	}
+}
+
+int Baza::wypiszPlik(string nazwa_) const
+{
+	for (unsigned i = 0; i < pliki.size(); ++i) {
+		if (pliki[i].getNazwa() == nazwa_) {
+			cout << pliki[i].getTrescPliku();
+			return 1;
+		}
+	}
+	return 0;
 }

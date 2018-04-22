@@ -15,7 +15,10 @@ public:
 	int saveToFile();
 	int loadFromFile();
 	Plik* getFile(std::string nazwa_);
+	void wyczyscBaze();
 
 	Word* szukajSlowa(std::string nazwa_);
+	void wypiszBaze()const;
+	int wypiszPlik(std::string nazwa_)const;
 };
 
