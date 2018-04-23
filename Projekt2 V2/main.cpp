@@ -19,7 +19,7 @@ int main() {
 		cout << "4 Wypisz tresc pliku" << endl;
 		cout << "5 Zapisz baze w pliku" << endl;
 		cout << "6 Odczytaj baze z pliku" << endl;
-		cout << "0 Wyjdz z porogramu" << endl;
+		cout << "0 Wyjdz z programu" << endl;
 		while (!(cin >> opcja)) {
 			cout << endl << "Blad! Podaj odpowiedni numer ";
 			cin.clear();
@@ -28,12 +28,14 @@ int main() {
 		if (opcja == 0)
 			break;
 		if (opcja == 1) { //wprowadz plik
+			cout << "Podaj nazwe pliku: ";
 			string nazwa;
-			while (!(cin >> opcja)) {
+			cin >> nazwa;
+			/*while (!(cin >> opcja)) {
 				cout << endl << "Blad! Podaj odpowiedni numer ";
 				cin.clear();
 				cin.ignore(numeric_limits<streamsize>::max(), '\n');
-			}
+			}*/
 			if (baza.dolaczPlik(nazwa) == 0) {
 				cout << "Blad!" << endl;
 				continue;
@@ -45,6 +47,7 @@ int main() {
 			cout << "Plik " << nazwa << " zostal wprowadzony do bazy danych." << endl;
 		}
 		else if (opcja == 2) {//szukaj slowa w bazie
+			cout << "Podaj slowo: ";
 			string w;
 			cin >> w;
 			Word* slowo = baza.szukajSlowa(w);

@@ -16,7 +16,8 @@ public:
 			nazwa = nazwa_;
 			std::string linia;
 			while (!uchwytDoPliku.eof()) {
-				uchwytDoPliku >> linia;
+				//uchwytDoPliku >> linia;
+				getline(uchwytDoPliku, linia);
 				trescPliku += linia+"\n";
 			}
 		}

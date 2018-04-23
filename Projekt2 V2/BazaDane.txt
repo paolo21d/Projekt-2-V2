@@ -1,5 +1,11 @@
 plik1.txt
 plik2.txt
 #WORDS
-ala 5 2 plik1.txt 3 plik2.txt 2
-kot 1 1 plik2.txt 1
+Plik 2 2 plik1.txt 1 plik2.txt 1 
+numer 2 2 plik1.txt 1 plik2.txt 1 
+jeden 1 1 plik1.txt 1 
+Ala 2 2 plik1.txt 1 plik2.txt 1 
+ma 2 2 plik1.txt 1 plik2.txt 1 
+kota 1 1 plik1.txt 1 
+dwa 1 1 plik2.txt 1 
+Kota 1 1 plik2.txt 1 

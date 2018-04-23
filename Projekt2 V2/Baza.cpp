@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <algorithm>
 
 #include "Baza.h"
 
@@ -13,6 +14,10 @@ Baza::Baza()
 
 int Baza::dolaczPlik(string nazwa_) {
 	//0- nie udalo sie wczytac; 1-uda³o siê wczytac plik
+	for (unsigned i = 0; i < pliki.size(); ++i) {
+		if (pliki[i].getNazwa() == nazwa_)
+			return 0;
+	}
 	Plik p(nazwa_);
 	if (p.getNazwa() != nazwa_)
 		return 0;
@@ -35,7 +40,7 @@ int Baza::wczytajPlikDoBazy(string nazwa_) {
 	string tresc, wyraz;
 	tresc= plikptr->getTrescPliku();
 	while (true) {
-		wyraz = tresc.substr(0, tresc.find(" "));
+		wyraz = tresc.substr(0, min(tresc.find("\n"), tresc.find(" ")));
 		if (wyraz.empty()) { //koniec tresci
 			break;
 		}
@@ -44,12 +49,13 @@ int Baza::wczytajPlikDoBazy(string nazwa_) {
 		unsigned i;
 		for (i = 0; i < slowa.size(); ++i) {
 			if (slowa[i].tresc == wyraz) { //juz jest ten wyraz w bazie
-				i = slowa.size() + 1;
+				
 				unsigned k;
 				for (k = 0; k < slowa[i].listaPlikow.size(); ++k) {//sprawdzamy czy ten wyraz wystapil juz w tym pliku
 					if (slowa[i].listaPlikow[k].getNazwaPliku() == nazwa_) { //byl juz ten wyraz w tym pliku
-						k = slowa[i].listaPlikow.size() + 1;
+						
 						slowa[i].listaPlikow[k].zwiekszIlosc();
+						k = slowa[i].listaPlikow.size() + 1;
 						break;
 					}
 				}
@@ -58,6 +64,7 @@ int Baza::wczytajPlikDoBazy(string nazwa_) {
 					slowa[i].listaPlikow.push_back(wyst);
 				}
 				slowa[i].ilosc++;
+				i = slowa.size() + 1;
 				break;
 			}
 		}
@@ -73,7 +80,7 @@ int Baza::wczytajPlikDoBazy(string nazwa_) {
 
 int Baza::saveToFile() {
 	fstream file;
-	file.open("BazaDane.txt", ios::trunc);
+	file.open("BazaDane.txt", ios::trunc | ios::out);
 	if (!file.good())
 		return 0;
 
@@ -85,7 +92,7 @@ int Baza::saveToFile() {
 		Word &word = slowa[i];
 		file << word.tresc << " " << word.ilosc << " " << word.listaPlikow.size() << " ";
 		for (unsigned k = 0; k < word.listaPlikow.size(); ++k) {
-			Wystapienie wyst = word.listaPlikow[i];
+			Wystapienie wyst = word.listaPlikow[k];
 			file << wyst.getNazwaPliku() << " " << wyst.getIlosc() << " ";
 		}
 		file << endl;
@@ -101,16 +108,24 @@ int Baza::loadFromFile()
 	if (!file.good())
 		return 0;
 
+	wyczyscBaze();
 	string linia, tresc, nazwa;
 	unsigned ilosc, iloscPlikow;
 	while (!file.eof()) {
-		file >> linia;
+		//file >> linia;
+		getline(file, linia);
 		if (linia == "#WORDS") //koniec nazw plikow, poczatek slow
 			break;
-		this->dolaczPlik(linia);
+		if (dolaczPlik(linia) == 0) {
+			wyczyscBaze();
+			return 0;
+		}
 	}
 	while (!file.eof()) {
-		file >> linia;
+		//file >> linia;
+		getline(file, linia);
+		if (linia.empty())
+			break;
 		stringstream ss;
 		ss << linia;
 		ss >> tresc >> ilosc >> iloscPlikow;
@@ -127,6 +142,7 @@ int Baza::loadFromFile()
 			wyst.setIlosc(ilosc);
 			w.listaPlikow.push_back(wyst);
 		}
+		slowa.push_back(w);
 	}
 	file.close();
 	return 1;
@@ -166,8 +182,9 @@ void Baza::wypiszBaze() const
 		Word const &word = slowa[i];
 		cout << word.tresc << " " << word.ilosc << " " << word.listaPlikow.size() << " ";
 		for (unsigned k = 0; k < word.listaPlikow.size(); ++k) {
-			Wystapienie wyst = word.listaPlikow[i];
+			Wystapienie const &wyst = word.listaPlikow[k];
 			cout << wyst.getNazwaPliku() << " " << wyst.getIlosc() << " ";
+			//cout << word.listaPlikow[i].getNazwaPliku() << " " << word.listaPlikow[i].getIlosc() << " ";
 		}
 		cout << endl;
 	}
