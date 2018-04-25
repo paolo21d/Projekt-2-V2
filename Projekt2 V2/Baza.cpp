@@ -40,7 +40,7 @@ int Baza::wczytajPlikDoBazy(string nazwa_) {
 	string tresc, wyraz;
 	tresc= plikptr->getTrescPliku();
 	while (true) {
-		wyraz = tresc.substr(0, min(tresc.find("\n"), tresc.find(" ")));
+		wyraz = tresc.substr(0, min(tresc.find("\n"), min(tresc.find(" "), min(tresc.find(","), tresc.find(";")))));
 		if (wyraz.empty()) { //koniec tresci
 			break;
 		}

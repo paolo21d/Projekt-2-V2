@@ -11,6 +11,6 @@ public:
 	std::vector<Wystapienie> listaPlikow;
 
 	Word(std::string tresc_) : tresc(tresc_), ilosc(1) {};
-	~Word();
+	
 };
 

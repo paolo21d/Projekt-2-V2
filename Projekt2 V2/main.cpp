@@ -23,7 +23,7 @@ int main() {
 		while (!(cin >> opcja)) {
 			cout << endl << "Blad! Podaj odpowiedni numer ";
 			cin.clear();
-			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cin.ignore(1024, '\n');
 		}
 		if (opcja == 0)
 			break;
@@ -34,7 +34,7 @@ int main() {
 			/*while (!(cin >> opcja)) {
 				cout << endl << "Blad! Podaj odpowiedni numer ";
 				cin.clear();
-				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				cin.ignore(1024, '\n');
 			}*/
 			if (baza.dolaczPlik(nazwa) == 0) {
 				cout << "Blad!" << endl;
@@ -83,4 +83,5 @@ int main() {
 			}
 		}
 	}
+	return 0;
 }
